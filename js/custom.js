@@ -18,10 +18,10 @@ $(document).ready(function () {
         "error": ""
     };
     var postAnswer = {
+        "id": "",
         "position": "",
         "status": "",
-        "gameId": 0,
-        "error": ""
+        "gameId": 0
     };
     startBtn.on('click',function(){
         startBtn.hide();
@@ -43,6 +43,9 @@ $(document).ready(function () {
                     }
                     else{
                         waiting.text("Player " + json.isPlayer + " connected!");
+                        if(postData['place'] == "second"){
+                            checkAnswer();
+                        }
                     }
                     console.log("Success");
                 }
@@ -93,6 +96,7 @@ $(document).ready(function () {
                        else{
                            $('#'+json.id).text("O");
                        }
+                       checkAnswer();
                    }
                }
            });
@@ -100,15 +104,23 @@ $(document).ready(function () {
     });
     function checkAnswer() {
         postAnswer['gameId'] = postData['gameId'];
+        postAnswer['id'] = postGame['id'];
         $.ajax({
             type: 'POST',
             url: "/php/CheckAnswer.php",
             dataType: 'json',
             data: {answerData: postAnswer},
             success: function (json) {
-                if(json.error == ""){
-                    console.log('Success');
-                   
+                if(json.status == ""){
+                    setTimeout(checkAnswer, 2000);
+
+                }
+                else if(postData['place'] == "first"){
+
+                    $('#'+json.position).text("O");
+                }
+                else{
+                    $('#'+json.position).text("X");
                 }
             }
         });

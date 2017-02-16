@@ -32,7 +32,7 @@
         </div>
         <div class="row row_centered">
             <button id="startBtn" class="btn btn-success col-md-12 col_centered btnStart">START</button>
-            <div id="waitingDiv" class="col-md-12 col_centered waitingDiv" hidden>Waiting for player</div>
+            <div id="waitingDiv" class="col-md-12 col_centered waitingDiv" hidden>Waiting player</div>
         </div>
         <div class="row row_centered">
             <div class="col-xs-12  col-md-12 col_centered">
