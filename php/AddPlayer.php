@@ -22,6 +22,7 @@ if($result->num_rows == 0) {
     else{
         $response['gameId'] = $conn->insert_id;
         $response['isPlayer'] = "";
+        $response['place'] = "first";
     }
     $result->free();
 }
@@ -36,6 +37,7 @@ else{
    else{
        $response['gameId'] = $id;
        $response['isPlayer'] = $row['player1'];
+       $response['place'] = "second";
    }
    $result->free();
 }

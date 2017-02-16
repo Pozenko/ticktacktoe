@@ -7,11 +7,21 @@ $(document).ready(function () {
         "player":"",
         "isPlayer": "",
         "gameId":0,
+        "place": "",
         "error": ""
     };
     var postGame = {
         "id": "",
-        "player": ""
+        "gameId": 0,
+        "place": "",
+        "status": "",
+        "error": ""
+    };
+    var postAnswer = {
+        "position": "",
+        "status": "",
+        "gameId": 0,
+        "error": ""
     };
     startBtn.on('click',function(){
         startBtn.hide();
@@ -27,6 +37,7 @@ $(document).ready(function () {
                 if(json.error == ""){
                     postData['isPlayer'] = json.isPlayer;
                     postData['gameId'] = json.gameId;
+                    postData['place'] = json.place;
                     if(postData['isPlayer'] == ""){
                         checkPlayer2();
                     }
@@ -63,20 +74,46 @@ $(document).ready(function () {
             }
         });
     }
-    cells.on('click', function () {
+    cells.on('click', function (event) {
        if(postData['isPlayer'] != ""){
-           postGame['player'] = postData['player'];
+           postGame['gameId'] = postData['gameId'];
+           postGame['place'] = postData['place'];
+           postGame['id'] = event.target.id;
            $.ajax({
                type: 'POST',
                url: "/php/Game.php",
                dataType: 'json',
                data: {gameData: postGame},
                success: function (json) {
-                   console.log('Success');
+                   if(json.error == "" && json.status == "success"){
+                       console.log('Success');
+                       if(json.place == "first"){
+                           $('#'+json.id).text("X");
+                       }
+                       else{
+                           $('#'+json.id).text("O");
+                       }
+                   }
                }
            });
        }
     });
+    function checkAnswer() {
+        postAnswer['gameId'] = postData['gameId'];
+        $.ajax({
+            type: 'POST',
+            url: "/php/CheckAnswer.php",
+            dataType: 'json',
+            data: {answerData: postAnswer},
+            success: function (json) {
+                if(json.error == ""){
+                    console.log('Success');
+                   
+                }
+            }
+        });
+        
+    }
     startBtn.prop('disabled',true);
     userName.on('keyup',function(){
         if($(this).val().length !=0){
