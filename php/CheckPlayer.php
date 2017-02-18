@@ -2,16 +2,35 @@
 require_once 'DBConnector.php';
 
 $response = $_POST['playerData'];
-$id = $response['gameId'];
-$connector = new DBConnector();
-$conn = $connector->connect($response);
-if($conn == null){
-    echo json_encode($response);
-}
+//$gameId = $response['gameId'];
 
-$sql = "SELECT player2 FROM games WHERE id = '$id'";
-$result = $conn->query($sql);
-$row = $result->fetch_assoc();
+$connector = new DBConnector();
+$conn = $connector->connect();
+
+$stmtSelect = $conn->prepare("SELECT player2 FROM games WHERE id = :id");
+$stmtSelect->execute(array(':id'=>$response['gameId']));
+$row = $stmtSelect->fetch();
 $response['isPlayer'] = $row['player2'];
+
 echo json_encode($response);
-$conn->close();
+
+
+
+
+
+
+
+
+
+
+
+//old check player
+//$conn = $connector->connect($response);
+//
+//
+//$sql = "SELECT player2 FROM games WHERE id = '$id'";
+//$result = $conn->query($sql);
+//$row = $result->fetch_assoc();
+//$response['isPlayer'] = $row['player2'];
+//echo json_encode($response);
+//$conn->close();

@@ -3,25 +3,15 @@ $(document).ready(function () {
     var userName = $('#userName');
     var waiting = $('#waitingDiv');
     var cells = $('.cellGame');
+    var checkPlayerInterval = 5000;
     var postData = {
         "player":"",
         "isPlayer": "",
         "gameId":0,
-        "place": "",
-        "error": ""
-    };
-    var postGame = {
         "id": "",
-        "gameId": 0,
         "place": "",
-        "status": "",
-        "error": ""
-    };
-    var postAnswer = {
-        "id": "",
         "position": "",
-        "status": "",
-        "gameId": 0
+        "status": ""
     };
     startBtn.on('click',function(){
         startBtn.hide();
@@ -34,7 +24,7 @@ $(document).ready(function () {
             dataType: 'json',
             data: {playerData: postData},
             success: function (json) {
-                if(json.error == ""){
+                if(json.status == "success"){
                     postData['isPlayer'] = json.isPlayer;
                     postData['gameId'] = json.gameId;
                     postData['place'] = json.place;
@@ -49,9 +39,9 @@ $(document).ready(function () {
                     }
                     console.log("Success");
                 }
-                else{
-                    console.log(json.error);
-                }
+                // else{
+                //     console.log(json.error);
+                // }
             }
         });
     });
@@ -62,31 +52,30 @@ $(document).ready(function () {
             dataType: 'json',
             data: {playerData: postData},
             success: function (json) {
-                if(json.error == ""){
+                // if(json.error == ""){
                     if(json.isPlayer == ""){
-                        setTimeout(checkPlayer2,5000);
+                        setTimeout(checkPlayer2,checkPlayerInterval);
                     }
                     else{
                         waiting.text("Player " + json.isPlayer + " connected!");
+                        postData['isPlayer'] = json.isPlayer;
                     }
-                    postData['isPlayer'] = json.isPlayer;
-                }
-                else{
-                    console.log(json.error);
-                }
+                    //postData['isPlayer'] = json.isPlayer;
+                // }
+                // else{
+                //     console.log(json.error);
+                // }
             }
         });
     }
     cells.on('click', function (event) {
        if(postData['isPlayer'] != ""){
-           postGame['gameId'] = postData['gameId'];
-           postGame['place'] = postData['place'];
-           postGame['id'] = event.target.id;
+           postData['id'] = event.target.id;
            $.ajax({
                type: 'POST',
                url: "/php/Game.php",
                dataType: 'json',
-               data: {gameData: postGame},
+               data: {gameData: postData},
                success: function (json) {
                    if(json.error == "" && json.status == "success"){
                        console.log('Success');
@@ -103,13 +92,11 @@ $(document).ready(function () {
        }
     });
     function checkAnswer() {
-        postAnswer['gameId'] = postData['gameId'];
-        postAnswer['id'] = postGame['id'];
         $.ajax({
             type: 'POST',
             url: "/php/CheckAnswer.php",
             dataType: 'json',
-            data: {answerData: postAnswer},
+            data: {answerData: postData},
             success: function (json) {
                 if(json.status == ""){
                     setTimeout(checkAnswer, 2000);
@@ -124,7 +111,6 @@ $(document).ready(function () {
                 }
             }
         });
-        
     }
     startBtn.prop('disabled',true);
     userName.on('keyup',function(){

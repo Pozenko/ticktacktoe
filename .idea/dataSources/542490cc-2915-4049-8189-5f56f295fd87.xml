@@ -30,7 +30,21 @@
       <DataType>varchar(25)|0</DataType>
       <DefaultExpression>&apos;&apos;</DefaultExpression>
     </column>
-    <key id="11" parent="6" name="PRIMARY">
+    <column id="11" parent="6" name="step">
+      <Position>5</Position>
+      <DataType>int(11)|0</DataType>
+      <DefaultExpression>&apos;0&apos;</DefaultExpression>
+    </column>
+    <column id="12" parent="6" name="lastId">
+      <Position>6</Position>
+      <DataType>int(11)|0</DataType>
+    </column>
+    <column id="13" parent="6" name="place">
+      <Position>7</Position>
+      <DataType>varchar(10)|0</DataType>
+      <DefaultExpression>&apos;&apos;</DefaultExpression>
+    </column>
+    <key id="14" parent="6" name="PRIMARY">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
