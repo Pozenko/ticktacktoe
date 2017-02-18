@@ -4,6 +4,7 @@ $(document).ready(function () {
     var waiting = $('#waitingDiv');
     var cells = $('.cellGame');
     var checkPlayerInterval = 5000;
+    var checkAnswerInterval = 1000;
     var postData = {
         "player":"",
         "isPlayer": "",
@@ -39,9 +40,6 @@ $(document).ready(function () {
                     }
                     console.log("Success");
                 }
-                // else{
-                //     console.log(json.error);
-                // }
             }
         });
     });
@@ -52,19 +50,13 @@ $(document).ready(function () {
             dataType: 'json',
             data: {playerData: postData},
             success: function (json) {
-                // if(json.error == ""){
-                    if(json.isPlayer == ""){
-                        setTimeout(checkPlayer2,checkPlayerInterval);
-                    }
-                    else{
-                        waiting.text("Player " + json.isPlayer + " connected!");
-                        postData['isPlayer'] = json.isPlayer;
-                    }
-                    //postData['isPlayer'] = json.isPlayer;
-                // }
-                // else{
-                //     console.log(json.error);
-                // }
+                if(json.isPlayer == ""){
+                    setTimeout(checkPlayer2,checkPlayerInterval);
+                }
+                else{
+                    waiting.text("Player " + json.isPlayer + " connected!");
+                    postData['isPlayer'] = json.isPlayer;
+                }
             }
         });
     }
@@ -77,7 +69,7 @@ $(document).ready(function () {
                dataType: 'json',
                data: {gameData: postData},
                success: function (json) {
-                   if(json.error == "" && json.status == "success"){
+                   if(json.status == "success"){
                        console.log('Success');
                        if(json.place == "first"){
                            $('#'+json.id).text("X");
@@ -99,10 +91,9 @@ $(document).ready(function () {
             data: {answerData: postData},
             success: function (json) {
                 if(json.status == ""){
-                    setTimeout(checkAnswer, 2000);
-
+                    setTimeout(checkAnswer, checkAnswerInterval);
                 }
-                else if(postData['place'] == "first"){
+                else if(json.place == "first"){
 
                     $('#'+json.position).text("O");
                 }
