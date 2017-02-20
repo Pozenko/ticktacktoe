@@ -1,9 +1,9 @@
 <?php
 class DBConnector{
-    private $serverName = "localhost:8889";
-    private $userName = "root";
-    private $password = "root";
-    private $dbName = "tttDB";
+    private $serverName = "localhost:80";
+    private $userName = "";
+    private $password = "";
+    private $dbName = "";
 
     public function connect(){
         $conn = new PDO("mysql:host=$this->serverName; dbname=$this->dbName", $this->userName, $this->password);
