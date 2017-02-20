@@ -12,6 +12,7 @@ $(document).ready(function () {
         "id": "",
         "place": "",
         "position": "",
+        "isWinn": "",
         "status": ""
     };
     startBtn.on('click',function(){
@@ -61,7 +62,7 @@ $(document).ready(function () {
         });
     }
     cells.on('click', function (event) {
-       if(postData['isPlayer'] != ""){
+       if(postData['isPlayer'] != "" && postData['isWinn'] == ""){
            postData['id'] = event.target.id;
            $.ajax({
                type: 'POST',
@@ -77,6 +78,7 @@ $(document).ready(function () {
                        else{
                            $('#'+json.id).text("O");
                        }
+                       //checkWinner();
                        checkAnswer();
                    }
                }
@@ -90,7 +92,7 @@ $(document).ready(function () {
             dataType: 'json',
             data: {answerData: postData},
             success: function (json) {
-                if(json.status == ""){
+                if(json.status == "" && postData['isWinn'] == ""){
                     setTimeout(checkAnswer, checkAnswerInterval);
                 }
                 else if(json.place == "first"){
@@ -99,6 +101,18 @@ $(document).ready(function () {
                 }
                 else{
                     $('#'+json.position).text("X");
+                }
+                if(json.isWinn != ""){
+                    postData['isWinn'] = json.isWinn;
+                    if(postData['place'] == json.isWinn){
+                        waiting.text("You Winn!");
+                    }
+                    else if(json.isWinn == "draw"){
+                        waiting.text("Draw!");
+                    }
+                    else{
+                        waiting.text("You Loose!");
+                    }
                 }
             }
         });

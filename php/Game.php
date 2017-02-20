@@ -25,7 +25,7 @@ else if($response['place'] == "second" && $row['step'] == 1){
     }
 }
 
-function SqlUpdate($conn, $row, $step, $response){
+function SqlUpdate(PDO $conn, $row, $step, $response){
     $stmtUpdate = $conn->prepare("UPDATE games 
                                   SET status = :rowStatus, step = '$step', lastId = :id, place = :place 
                                   WHERE id = :gameId");
