@@ -78,7 +78,6 @@ $(document).ready(function () {
                        else{
                            $('#'+json.id).text("O");
                        }
-                       //checkWinner();
                        checkAnswer();
                    }
                }
@@ -119,7 +118,7 @@ $(document).ready(function () {
     }
     startBtn.prop('disabled',true);
     userName.on('keyup',function(){
-        if($(this).val().length !=0){
+        if($(this).val().length != 0){
             startBtn.prop('disabled', false);
         }
         else{
@@ -132,4 +131,5 @@ $(document).ready(function () {
             $(this).val( $(this).val().replace(regexp,'') );
         }
     });
+
 });
