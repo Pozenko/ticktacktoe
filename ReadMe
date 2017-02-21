@@ -1,4 +1,0 @@
-Tick Tack Toe (lan)
-need create data base
-add table "games" from table.sql
-set variables from /php/DBConnector.php: $serverName, $userName, $password, $dbName.
